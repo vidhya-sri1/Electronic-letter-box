@@ -1,0 +1,35 @@
+#include <SoftwareSerial.h>
+#include <SoftwareSerial.h>
+#define RxD 1
+#define TxD 0
+
+
+SoftwareSerial BTserial(RxD, TxD); // RX, TX (now on pins 0 and 1)
+const int irSensorPin = 2;
+const int ledPin = 6; // Updated for LED on pin 6
+const int buzzerPin = 7; // Updated for buzzer on pin 7
+
+void setup() {
+  Serial.begin(9600);
+  BTserial.begin(9600);
+  pinMode(irSensorPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(RxD, INPUT);
+  pinMode(TxD, OUTPUT);
+}
+
+void loop() {
+  int sensorValue = digitalRead(irSensorPin);
+  if (sensorValue == HIGH) { // Object detected
+    digitalWrite(ledPin, LOW);
+    noTone(buzzerPin); // Sound a tone
+    delay(100); // Delay to avoid rapid message sending
+  } else {
+    digitalWrite(ledPin, HIGH);
+    tone(buzzerPin,10000);
+    Serial.print("you have got a mail\n");
+    Serial.println();
+    delay(100);
+  }
+}
